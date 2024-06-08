@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* إزالة هوامش الصفحة والحواف */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* تحديد التنسيق لعنصر message-user */
+    .message-user {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-sizing: border-box;
+      padding-top: 15px;
+      border-top: 2px solid #04B09B; /* خط تحت اسم المستخدم والصورة */
+    }
+
+    /* تحديد التنسيق لعنصر profile-info */
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* تحديد التنسيق لعنصر profile-img */
+    .profile-img {
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      border-radius: 50%;
+      border: 2px solid #4070f4;
+    }
+
+    /* تحديد التنسيق لعنصر name */
+    .name {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="message-user">
+    <div class="profile-info">
+      <div class="profile-img" id="message-user-img"></div>
+      <span class="name" id="message-user-name"></span>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const username = localStorage.getItem('selectedUser');
+      const image = localStorage.getItem('selectedUserImage');
+
+      if (username && image) {
+        document.getElementById('message-user-name').innerText = username;
+        document.getElementById('message-user-img').style.backgroundImage = `url(${image})`;
+      } else {
+        alert('No user data found.');
+        window.location.href = 'Messenger.html';
+      }
+    };
+  </script>
+</body>
+</html>

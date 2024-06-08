@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="user-list">
+    <div class="user-card">
+      <div class="profile-info">
+        <div class="profile-img" id="profile-img"></div>
+        <span class="name" id="profile-name">CodingLab</span>
+      </div>
+      <div class="buttons">
+        <button class="button" id="messageButton">Message</button>
+        <button id="subscribeButton" class="button">Subscribe</button>
+      </div>
+    </div>
+    <!-- يمكنك تكرار user-card لكل مستخدم -->
+  </div>
+
+  <script>
+    document.getElementById('messageButton').addEventListener('click', function() {
+      const username = document.getElementById('profile-name').innerText;
+      const imageStyle = document.getElementById('profile-img').style.backgroundImage;
+      const imageUrl = imageStyle.slice(5, -2); // استخراج رابط الصورة
+
+      localStorage.setItem('messengerUsername', username);
+      localStorage.setItem('messengerImage', imageUrl);
+
+      window.location.href = 'Messenger.html';
+    });
+  </script>
+  <script>
+    window.onload = function() {
+      // استرجاع بيانات المستخدم من localStorage
+      const username = localStorage.getItem('username');
+      const image = localStorage.getItem('image');
+    
+      if (username && image) {
+        document.getElementById('profile-name').innerText = username;
+        document.getElementById('profile-img').style.backgroundImage = image;
+      } else {
+        alert('No profile data found. Please log in first.');
+        window.location.href = 'index.html';
+      }
+    
+      // استرجاع عدد المتابعين المخزن في localStorage
+      const storedCount = localStorage.getItem('followerCount');
+      if (storedCount !== null) {
+        document.getElementById('followerCount').innerText = storedCount + ' Followers';
+      }
+    
+      // إضافة مستمع الحدث لزر Subscribe
+      document.getElementById('subscribeButton').addEventListener('click', function() {
+        const followerCountElement = document.getElementById('followerCount');
+        let currentCount = parseInt(followerCountElement.innerText.split(' ')[0]);
+    
+        if (this.classList.contains('subscribed')) {
+          currentCount--;
+          this.classList.remove('subscribed');
+        } else {
+          currentCount++;
+          this.classList.add('subscribed');
+        }
+    
+        followerCountElement.innerText = currentCount + ' Followers';
+        localStorage.setItem('followerCount', currentCount);
+      });
+    };
+  </script>
+</body>
+</html>
+<style>
+  /* تنسيق لصفحة Users */
+.user-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.user-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-img {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  border-radius: 50%;
+  border: 2px solid #4070f4;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #4070f4;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #0e4bf1;
+}
+
+</style>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Card UI Design</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="profile-card">
+    <div class="image">
+      <div class="profile-img" id="profile-img"></div>
+    </div>
+
+    <div class="text-data">
+      <span class="name" id="profile-name">CodingLab</span>
+      <span class="job">YouTuber & Blogger</span>
+    </div>
+
+    <div class="buttons">
+      <button id="subscribeButton" class="button">Subscribe</button>
+      <button class="button">Message</button>
+    </div>
+
+    <div class="analytics">
+      <div class="data">
+        <span id="followerCount" class="number">0 Followers</span>
+      </div>
+      <div class="data">
+        <span class="number">0 continues</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      // استرجاع بيانات المستخدم من localStorage
+      const username = localStorage.getItem('username');
+      const image = localStorage.getItem('image');
+
+      if (username && image) {
+        document.getElementById('profile-name').innerText = username;
+        document.getElementById('profile-img').style.backgroundImage = image;
+      } else {
+        alert('No profile data found. Please log in first.');
+        window.location.href = 'index.html';
+      }
+
+      // استرجاع عدد المتابعين المخزن في localStorage
+      const storedCount = localStorage.getItem('followerCount');
+      if (storedCount !== null) {
+        document.getElementById('followerCount').innerText = storedCount + ' Followers';
+      }
+
+      // إضافة مستمع الحدث لزر Subscribe
+      document.getElementById('subscribeButton').addEventListener('click', function() {
+        const followerCountElement = document.getElementById('followerCount');
+        let currentCount = parseInt(followerCountElement.innerText.split(' ')[0]);
+
+        if (this.classList.contains('subscribed')) {
+          currentCount--;
+          this.classList.remove('subscribed');
+        } else {
+          currentCount++;
+          this.classList.add('subscribed');
+        }
+
+        followerCountElement.innerText = currentCount + ' Followers';
+        localStorage.setItem('followerCount', currentCount);
+      });
+    };
+  </script>
+</body>
+</html>

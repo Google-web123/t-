@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messenger</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="messenger-list">
+    <div class="messenger-card">
+      <div class="profile-info">
+        <div class="profile-img" id="messenger-profile-img"></div>
+        <span class="name" id="messenger-profile-name"></span>
+      </div>
+    </div>
+    <!-- يمكنك تكرار messenger-card لكل مستخدم -->
+  </div>
+
+  <script>
+    window.onload = function() {
+      const username = localStorage.getItem('messengerUsername');
+      const image = localStorage.getItem('messengerImage');
+
+      if (username && image) {
+        document.getElementById('messenger-profile-name').innerText = username;
+        document.getElementById('messenger-profile-img').style.backgroundImage = `url(${image})`;
+
+        document.getElementById('messenger-profile-name').addEventListener('click', function() {
+          localStorage.setItem('selectedUser', username);
+          localStorage.setItem('selectedUserImage', image);
+          window.location.href = 'Messages.html';
+        });
+      } else {
+        alert('No user data found.');
+        window.location.href = 'Users.html';
+      }
+    };
+  </script>
+</body>
+</html>
+
+<style>
+  /* تنسيق لصفحة Messenger */
+.messenger-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.messenger-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-img {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  border-radius: 50%;
+  border: 2px solid #4070f4;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+</style>

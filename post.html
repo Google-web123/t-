@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #4E5050;
+            font-family: Arial, sans-serif;
+        }
+        .post-container {
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            margin-top: 20px;
+            color: #4E5050;
+        }
+        .post-container textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #D9D9D9;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            color: #4E5050;
+        }
+        .post-container button {
+            background-color: #44C4F0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .image-preview {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .image-preview img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .image-preview .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        placeholder{
+          color: #4E5050;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <textarea id="postContent" placeholder="What is happening?!"></textarea>
+        <input type="file" id="imageInput" accept="image/*"style="display: none;">
+        <div class="image-preview" id="imagePreview" style="display: none;">
+            <img id="imagePreviewImg" src="" alt="Image Preview">
+            <button class="remove-image" id="removeImageBtn">x</button>
+        </div>
+        <button id="chooseImageBtn">Choose Image</button>
+        <button id="postBtn">Post</button>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewImg = document.getElementById('imagePreviewImg');
+        const chooseImageBtn = document.getElementById('chooseImageBtn');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+        const postBtn = document.getElementById('postBtn');
+        const postContent = document.getElementById('postContent');
+
+        chooseImageBtn.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imagePreviewImg.src = reader.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeImageBtn.addEventListener('click', () => {
+            imagePreview.style.display = 'none';
+            imagePreviewImg.src = '';
+            imageInput.value = '';
+        });
+
+        postBtn.addEventListener('click', () => {
+            const content = postContent.value;
+            const imageSrc = imagePreviewImg.src;
+
+            if (content.trim() === '' && imageSrc === '') {
+                alert('Please enter some content or choose an image.');
+                return;
+            }
+
+            const post = {
+                content: content,
+                image: imageSrc,
+                timestamp: new Date().toLocaleString(),
+                likes: 0
+            };
+
+            let posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.push(post);
+            localStorage.setItem('posts', JSON.stringify(posts));
+
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
